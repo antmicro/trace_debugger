@@ -11,7 +11,9 @@
 // Author: Robert Balas (balasr@student.ethz.ch)
 // Description: Compress instruction traces and filter them
 
-module trace_debugger import trdb_pkg::*;
+import trdb_pkg::*;
+
+module trace_debugger
     #(parameter APB_ADDR_WIDTH = 32)
     (input logic                clk_i,
      input logic                rst_ni,
@@ -28,7 +30,15 @@ module trace_debugger import trdb_pkg::*;
      input logic [ILEN-1:0]     instr_i,
      input logic                compressed_i,
 
-     APB_BUS.Slave              apb_slave,
+     // APB interface
+     input logic [31:0]         paddr_i,
+     input logic [31:0]         pwdata_i,
+     input logic                pwrite_i,
+     input logic                psel_i,
+     input logic                penable_i,
+     output logic [31:0]        prdata_o,
+     output logic               pready_o,
+     output logic               pslverr_o,
 
      // generated packets, which go the the udma (or somewhere else)
      output logic [XLEN-1:0]    packet_word_o,
@@ -559,14 +569,14 @@ module trace_debugger import trdb_pkg::*;
     trdb_apb_if
         #(.APB_ADDR_WIDTH(APB_ADDR_WIDTH))
     i_trdb_apb_if
-        (.paddr(apb_slave.paddr),
-         .pwdata(apb_slave.pwdata),
-         .pwrite(apb_slave.pwrite),
-         .psel(apb_slave.psel),
-         .penable(apb_slave.penable),
-         .prdata(apb_slave.prdata),
-         .pready(apb_slave.pready),
-         .pslverr(apb_slave.pslverr),
+        (.paddr(paddr_i),
+         .pwdata(pwdata_i),
+         .pwrite(pwrite_i),
+         .psel(psel_i),
+         .penable(penable_i),
+         .prdata(prdata_o),
+         .pready(pready_o),
+         .pslverr(pslverr_o),
 
          .per_rdata_i(per_rdata),
          .per_ready_i(per_ready),
