@@ -11,6 +11,8 @@
 // Author: Robert Balas (balasr@student.ethz.ch)
 // Description: Compress instruction traces and filter them
 
+`define SYNTHESIS
+
 import trdb_pkg::*;
 
 module trace_debugger

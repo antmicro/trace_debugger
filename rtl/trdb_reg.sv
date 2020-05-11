@@ -222,11 +222,13 @@ module trdb_reg
     end
 
     // clock gating logic
-    pulp_clock_gating i_trdb_clock_gating
-        (.clk_i(clk_i),
-         .test_en_i(test_mode_i),
-         .en_i(ctrl_q.enable),
-         .clk_o(clk_gated));
+    // pulp_clock_gating i_trdb_clock_gating
+    //     (.clk_i(clk_i),
+    //      .test_en_i(test_mode_i),
+    //      .en_i(ctrl_q.enable),
+    //      .clk_o(clk_gated));
+
+    assign clk_gated = clk_i;
 
     assign clk_gated_o = clk_gated;
 
